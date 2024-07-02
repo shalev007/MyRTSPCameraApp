@@ -1,107 +1,99 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.media3.ui.PlayerView
-            android:id="@+id/player_view"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            app:show_buffering="when_playing"
-            app:show_shuffle_button="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="16dp"/>
-
-        <EditText
-            android:id="@+id/uri_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter RTSP URI"
-            android:layout_below="@id/player_view"
-            android:layout_margin="16dp"/>
-
-        <Switch
-            android:id="@+id/transport_switch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Use TCP (uncheck for UDP)"
-            android:layout_below="@id/uri_input"
-            android:layout_margin="16dp"/>
-
-        <ToggleButton
-            android:id="@+id/advanced_toggle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textOn="Hide Advanced"
-            android:textOff="Show Advanced"
-            android:layout_below="@id/transport_switch"
-            android:layout_margin="16dp"
-            android:layout_centerHorizontal="true"/>
-
         <LinearLayout
-            android:id="@+id/advanced_settings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone"
-            android:layout_below="@id/advanced_toggle"
-            android:layout_margin="16dp">
+            android:padding="16dp">
+
+            <androidx.media3.ui.PlayerView
+                android:id="@+id/player_view"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                app:show_buffering="when_playing"
+                app:show_shuffle_button="true"
+                android:layout_marginBottom="16dp"/>
 
             <EditText
-                android:id="@+id/buffer_min_duration"
+                android:id="@+id/uri_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Min Buffer Duration (ms)"/>
-
-            <EditText
-                android:id="@+id/buffer_max_duration"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Max Buffer Duration (ms)"/>
-
-            <EditText
-                android:id="@+id/buffer_playback_duration"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Buffer for Playback (ms)"/>
-
-            <EditText
-                android:id="@+id/buffer_rebuffer_duration"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Buffer for Rebuffer (ms)"/>
-
-            <EditText
-                android:id="@+id/timeout_duration"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Timeout (ms)"/>
+                android:hint="Enter RTSP URI"
+                android:layout_marginBottom="16dp"/>
 
             <Switch
-                android:id="@+id/force_lowest_bitrate"
+                android:id="@+id/transport_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Force Lowest Bitrate"/>
+                android:text="Use TCP (uncheck for UDP)"
+                android:layout_marginBottom="16dp"/>
+
+            <ToggleButton
+                android:id="@+id/advanced_toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOn="Hide Advanced"
+                android:textOff="Show Advanced"
+                android:layout_marginBottom="16dp"
+                android:layout_gravity="center_horizontal"/>
+
+            <LinearLayout
+                android:id="@+id/advanced_settings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_marginBottom="16dp">
+
+                <EditText
+                    android:id="@+id/buffer_min_duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Min Buffer Duration (ms)"
+                    android:text="15000"/>
+
+                <EditText
+                    android:id="@+id/buffer_max_duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Max Buffer Duration (ms)"
+                    android:text="50000"/>
+
+                <EditText
+                    android:id="@+id/buffer_playback_duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Buffer for Playback (ms)"
+                    android:text="2500"/>
+
+                <EditText
+                    android:id="@+id/buffer_rebuffer_duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Buffer for Rebuffer (ms)"
+                    android:text="5000"/>
+
+                <EditText
+                    android:id="@+id/timeout_duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Timeout (ms)"
+                    android:text="5000"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/play_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Play"
+                android:layout_gravity="center_horizontal"/>
         </LinearLayout>
-
-        <Button
-            android:id="@+id/play_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Play"
-            android:layout_below="@id/advanced_settings"
-            android:layout_margin="16dp"
-            android:layout_centerHorizontal="true"/>
-    </RelativeLayout>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</RelativeLayout>

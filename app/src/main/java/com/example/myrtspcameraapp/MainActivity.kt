@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Switch
+import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
@@ -20,7 +21,7 @@ import androidx.media3.ui.PlayerView
 
 
 class MainActivity : AppCompatActivity() {
-    
+
     private lateinit var playerView: PlayerView
     private lateinit var player: ExoPlayer
     private lateinit var uriInput: EditText
@@ -72,31 +73,35 @@ class MainActivity : AppCompatActivity() {
             val timeoutDuration = timeoutDurationInput.text.toString().toIntOrNull() ?: 5000
 
             if (uri.isNotEmpty()) {
-                val loadControl: LoadControl = DefaultLoadControl.Builder()
-                    .setBufferDurationsMs(
-                        bufferMinDuration,
-                        bufferMaxDuration,
-                        bufferPlaybackDuration,
-                        bufferRebufferDuration
-                    )
-                    .build()
+                try {
+                    val loadControl: LoadControl = DefaultLoadControl.Builder()
+                        .setBufferDurationsMs(
+                            bufferMinDuration,
+                            bufferMaxDuration,
+                            bufferPlaybackDuration,
+                            bufferRebufferDuration
+                        )
+                        .build()
 
-                player = ExoPlayer.Builder(this)
-                    .setLoadControl(loadControl)
-                    .build()
-                playerView.player = player
+                    player = ExoPlayer.Builder(this)
+                        .setLoadControl(loadControl)
+                        .build()
+                    playerView.player = player
 
-                val mediaItem = MediaItem.fromUri(uri)
-                val rtspDataSourceFactory = RtspMediaSource.Factory()
-                    .setForceUseRtpTcp(useTcp.isChecked)
-                    .setTimeoutMs(timeoutDuration.toLong())
-                    .setDebugLoggingEnabled(true)
+                    val mediaItem = MediaItem.fromUri(uri)
+                    val rtspDataSourceFactory = RtspMediaSource.Factory()
+                        .setForceUseRtpTcp(useTcp.isChecked)
+                        .setTimeoutMs(timeoutDuration.toLong())
+                        .setDebugLoggingEnabled(true)
 
-                val mediaSource = rtspDataSourceFactory.createMediaSource(mediaItem)
+                    val mediaSource = rtspDataSourceFactory.createMediaSource(mediaItem)
 
-                player.setMediaSource(mediaSource)
-                player.prepare()
-                player.play()
+                    player.setMediaSource(mediaSource)
+                    player.prepare()
+                    player.play()
+                } catch (e: Exception) {
+                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                }
             }
         }
     }
@@ -146,6 +151,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        player.release()
+        if (::player.isInitialized) {
+            player.release()
+        }
     }
 }
