@@ -84,6 +84,13 @@
                     android:layout_height="wrap_content"
                     android:hint="Buffer for Rebuffer (ms)"
                     android:text="5000"/>
+
+                <EditText
+                    android:id="@+id/timeout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Timeout MS"
+                    android:layout_marginBottom="16dp"/>
             </LinearLayout>
 
             <Button

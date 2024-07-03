@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bufferMaxDurationInput: EditText
     private lateinit var bufferPlaybackDurationInput: EditText
     private lateinit var bufferRebufferDurationInput: EditText
+    private lateinit var timeoutInput: EditText
 
     @OptIn(UnstableApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +54,7 @@ class MainActivity : AppCompatActivity() {
         bufferMaxDurationInput = findViewById(R.id.buffer_max_duration)
         bufferPlaybackDurationInput = findViewById(R.id.buffer_playback_duration)
         bufferRebufferDurationInput = findViewById(R.id.buffer_rebuffer_duration)
+        timeoutInput = findViewById(R.id.timeout)
         useTcp = findViewById(R.id.transport_switch)
 
         // Set default values programmatically
@@ -60,6 +62,7 @@ class MainActivity : AppCompatActivity() {
         bufferMaxDurationInput.setText(DefaultLoadControl.DEFAULT_MAX_BUFFER_MS.toString())
         bufferPlaybackDurationInput.setText(DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS.toString())
         bufferRebufferDurationInput.setText(DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS.toString())
+        timeoutInput.setText(RtspMediaSource.DEFAULT_TIMEOUT_MS.toString())
 
         advancedToggle.setOnCheckedChangeListener { _, isChecked ->
             advancedSettings.visibility = if (isChecked) View.VISIBLE else View.GONE
@@ -77,6 +80,7 @@ class MainActivity : AppCompatActivity() {
             val bufferMaxDuration = bufferMaxDurationInput.text.toString().toIntOrNull() ?: DefaultLoadControl.DEFAULT_MAX_BUFFER_MS
             val bufferPlaybackDuration = bufferPlaybackDurationInput.text.toString().toIntOrNull() ?: DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS
             val bufferRebufferDuration = bufferRebufferDurationInput.text.toString().toIntOrNull() ?: DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
+            val timeout = timeoutInput.text.toString().toIntOrNull() ?: RtspMediaSource.DEFAULT_TIMEOUT_MS
 
             if (uri.isNotEmpty()) {
                 try {
@@ -97,7 +101,7 @@ class MainActivity : AppCompatActivity() {
                     val mediaItem = MediaItem.fromUri(uri)
                     val rtspDataSourceFactory = RtspMediaSource.Factory()
                         .setForceUseRtpTcp(useTcp.isChecked)
-                        .setTimeoutMs(1000)
+                        .setTimeoutMs(timeout.toLong())
 
                     val mediaSource = rtspDataSourceFactory.createMediaSource(mediaItem)
 
