@@ -12,7 +12,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
-
+            <Button
+                android:id="@+id/switch_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="onviff"
+                android:layout_gravity="center_horizontal"/>
             <androidx.media3.ui.PlayerView
                 android:id="@+id/player_view"
                 android:layout_width="match_parent"
@@ -78,13 +83,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Buffer for Rebuffer (ms)"
-                    android:text="5000"/>
-
-                <EditText
-                    android:id="@+id/timeout_duration"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Timeout (ms)"
                     android:text="5000"/>
             </LinearLayout>
 

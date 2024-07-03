@@ -50,6 +50,10 @@ dependencies {
     implementation("androidx.media3:media3-exoplayer-dash:1.1.0")
     implementation("androidx.media3:media3-ui:1.1.0")
     implementation("androidx.media3:media3-exoplayer-rtsp:1.3.1")
+    implementation("io.ktor:ktor-client-core:2.0.0")
+    implementation("io.ktor:ktor-server-content-negotiation:2.0.0")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.0")
+    implementation("com.seanproctor:onvifcamera:1.8.3")
 
 //    implementation("com.google.android.exoplayer:exoplayer-rtsp:2.18.1")
 //    implementation("com.google.android.exoplayer:exoplayer-core:2.18.1")
