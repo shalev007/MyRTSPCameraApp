@@ -40,6 +40,13 @@
                 android:text="Use TCP (uncheck for UDP)"
                 android:layout_marginBottom="16dp"/>
 
+            <Switch
+                android:id="@+id/mute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mute"
+                android:layout_marginBottom="16dp"/>
+
             <ToggleButton
                 android:id="@+id/advanced_toggle"
                 android:layout_width="wrap_content"

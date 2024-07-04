@@ -3,7 +3,6 @@ package com.example.myrtspcameraapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -12,12 +11,14 @@ import android.widget.Switch
 import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.annotation.OptIn
+import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.LoadControl
 import androidx.media3.exoplayer.rtsp.RtspMediaSource
+import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.ui.PlayerView
 
 // "rtsp://51.17.227.45:5555/av0_0"
@@ -27,7 +28,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var playerView: PlayerView
     private lateinit var player: ExoPlayer
     private lateinit var uriInput: EditText
-    private lateinit var useTcp: Switch
+    private lateinit var useTcpSwitch: Switch
+    private lateinit var muteSwitch: Switch
     private lateinit var playButton: Button
     private lateinit var switchActivityButton: Button
 
@@ -55,7 +57,8 @@ class MainActivity : AppCompatActivity() {
         bufferPlaybackDurationInput = findViewById(R.id.buffer_playback_duration)
         bufferRebufferDurationInput = findViewById(R.id.buffer_rebuffer_duration)
         timeoutInput = findViewById(R.id.timeout)
-        useTcp = findViewById(R.id.transport_switch)
+        useTcpSwitch = findViewById(R.id.transport_switch)
+        muteSwitch = findViewById(R.id.mute)
 
         // Set default values programmatically
         bufferMinDurationInput.setText(DefaultLoadControl.DEFAULT_MIN_BUFFER_MS.toString())
@@ -93,14 +96,25 @@ class MainActivity : AppCompatActivity() {
                         )
                         .build()
 
-                    player = ExoPlayer.Builder(this)
+                    val playerBuilder = ExoPlayer.Builder(this)
                         .setLoadControl(loadControl)
-                        .build()
+
+                    if (useTcpSwitch.isChecked) {
+                        val trackSelector = DefaultTrackSelector(this).apply {
+                            setParameters(buildUponParameters()
+                                .setRendererDisabled(C.TRACK_TYPE_AUDIO, true)
+                                .setRendererDisabled(C.TRACK_TYPE_METADATA, true)
+                            )
+                        }
+                        playerBuilder.setTrackSelector(trackSelector)
+                    }
+
+                    player = playerBuilder.build()
                     playerView.player = player
 
                     val mediaItem = MediaItem.fromUri(uri)
                     val rtspDataSourceFactory = RtspMediaSource.Factory()
-                        .setForceUseRtpTcp(useTcp.isChecked)
+                        .setForceUseRtpTcp(useTcpSwitch.isChecked)
                         .setTimeoutMs(timeout.toLong())
 
                     val mediaSource = rtspDataSourceFactory.createMediaSource(mediaItem)
